@@ -1,14 +1,3 @@
-SELECT * FROM public.film LIMIT 10;
-
-SELECT COUNT(*) AS total_movies
-FROM public.film;
-
--- 3. Find movies longer than 120 minutes
-SELECT title, length
-FROM public.film
-WHERE length > 120
-ORDER BY length DESC;
-
 -- Query 1. Output the number of movies in each category, sorted descending.
 
 SELECT c.name AS category, COUNT(fc.film_id) AS movie_count
@@ -111,6 +100,7 @@ WITH city_groups AS (
     FROM public.city WHERE city LIKE '%-%'
 ), category_hours AS (
     SELECT cg.city_group, c.category_id, c.name AS category,
+                   -- Snowflake: use SUM(DATEDIFF('second', r.rental_date, r.return_date)) / 3600.0.
            SUM(EXTRACT(EPOCH FROM (r.return_date - r.rental_date)))
                / 3600.0 AS total_rental_hours
     FROM city_groups AS cg
