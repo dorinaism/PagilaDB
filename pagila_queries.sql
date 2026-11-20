@@ -100,7 +100,7 @@ WITH city_groups AS (
     FROM public.city WHERE city LIKE '%-%'
 ), category_hours AS (
     SELECT cg.city_group, c.category_id, c.name AS category,
-                   -- Snowflake: use SUM(DATEDIFF('second', r.rental_date, r.return_date)) / 3600.0.
+-- Snowflake: use SUM(DATEDIFF('second', r.rental_date, r.return_date)) / 3600.0.
            SUM(EXTRACT(EPOCH FROM (r.return_date - r.rental_date)))
                / 3600.0 AS total_rental_hours
     FROM city_groups AS cg
